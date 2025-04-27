@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.editor .linkified {
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+.editor .linkified:hover {
+  text-decoration: underline;
+}
+
 :root {
   --primary-50: #eef2ff;
   --primary-100: #e0e7ff;

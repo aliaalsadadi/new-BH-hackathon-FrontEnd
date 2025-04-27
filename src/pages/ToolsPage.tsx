@@ -1,39 +1,119 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, AlignLeft, Languages, Brain, BarChart, BookOpen, Globe, Code, FileText } from 'lucide-react';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import FeatureCard from '../components/ui/FeatureCard';
 import Button from '../components/ui/Button';
+import punycode from 'punycode';
 
 const ToolsPage: React.FC = () => {
-  const [domainInput, setDomainInput] = useState('');
-  const [resultLink, setResultLink] = useState<string | null>(null);
+  const [textInput, setTextInput] = useState('');
+  const [processedText, setProcessedText] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleTranslate = async () => {
+  // ========== LINKIFY LOCALLY ==========
+  const linkifyTextUTS58 = (text: string): string => {
+    if (!text) return '';
+
+    // Preserve line breaks
+    let processedText = text.replace(/\n/g, '\n ').replace(/\r/g, '\r ');
+
+    // Patterns
+    const domainLabelPattern = /[\p{L}\p{N}][\p{L}\p{N}-]*/gu;
+    const domainPattern = new RegExp(`(${domainLabelPattern.source}(?:\\.${domainLabelPattern.source})+)`, 'u');
+    const emailLocalPartPattern = /[\p{L}\p{N}._%+-]+/gu;
+    const emailPattern = new RegExp(`(${emailLocalPartPattern.source}@${domainPattern.source})`, 'gu');
+    const urlPrefixPattern = /(?:https?:\/\/|www\.)/iu;
+    const pathQueryFragmentPattern = /(?:\/[^\s<>()[\]{}]*)?/gu;
+    const urlPattern = new RegExp(`(?:${urlPrefixPattern.source})?${domainPattern.source}${pathQueryFragmentPattern.source}`, 'gu');
+
+    const processedRanges: { start: number; end: number }[] = [];
+
+    let match: RegExpExecArray | null;
+
+    // --------- EMAILS First ----------
+    while ((match = emailPattern.exec(processedText)) !== null) {
+      const fullMatch = match[0];
+      const startPos = match.index;
+      const endPos = startPos + fullMatch.length;
+
+      if (processedRanges.some(r => (startPos >= r.start && startPos < r.end) || (endPos > r.start && endPos <= r.end))) continue;
+
+      try {
+        const [localPart, domainPart] = fullMatch.split('@');
+        const asciiDomain = punycode.toASCII(domainPart);
+        const asciiEmail = `${localPart}@${asciiDomain}`;
+        const replacement = `<a href="mailto:${asciiEmail}" class="text-primary-600 hover:underline">${fullMatch}</a>`;
+
+        processedText = processedText.slice(0, startPos) + replacement + processedText.slice(endPos);
+        const diff = replacement.length - fullMatch.length;
+        emailPattern.lastIndex += diff;
+        processedRanges.push({ start: startPos, end: startPos + replacement.length });
+      } catch (error) {
+        console.error("Email linkify error", error);
+      }
+    }
+
+    // --------- URLs After ----------
+    urlPattern.lastIndex = 0;
+    while ((match = urlPattern.exec(processedText)) !== null) {
+      const fullMatch = match[0];
+      const startPos = match.index;
+      const endPos = startPos + fullMatch.length;
+
+      if (processedRanges.some(r => (startPos >= r.start && startPos < r.end) || (endPos > r.start && endPos <= r.end))) continue;
+
+      try {
+        if (!fullMatch.includes('.')) continue;
+        const hasProtocol = /^https?:\/\//i.test(fullMatch);
+        const hasWww = /^www\./i.test(fullMatch);
+
+        let domainPart: string;
+        if (hasProtocol) {
+          domainPart = fullMatch.split('//')[1].split('/')[0];
+        } else if (hasWww) {
+          domainPart = fullMatch.split('/')[0];
+        } else {
+          domainPart = fullMatch.split('/')[0];
+        }
+
+        const asciiDomain = punycode.toASCII(domainPart);
+        const asciiUrl = fullMatch.replace(domainPart, asciiDomain);
+        const href = hasProtocol ? asciiUrl : `http://${asciiUrl}`;
+
+        const replacement = `<a href="${href}" class="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
+        processedText = processedText.slice(0, startPos) + replacement + processedText.slice(endPos);
+        const diff = replacement.length - fullMatch.length;
+        urlPattern.lastIndex += diff;
+        processedRanges.push({ start: startPos, end: startPos + replacement.length });
+      } catch (error) {
+        console.error("URL linkify error", error);
+      }
+    }
+
+    return processedText.replace(/\n /g, '\n').replace(/\r /g, '\r');
+  };
+
+
+  const handleLinkifyText = () => {
     setErrorMessage(null);
-    setResultLink(null);
+    setProcessedText(null);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASEURL}/api/linkify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: domainInput }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setResultLink(data.link);
-      } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.error || 'Failed to process the input.');
-      }
+      const result = linkifyTextUTS58(textInput);
+      setProcessedText(result);
     } catch (error) {
       console.error(error);
-      setErrorMessage('An unexpected error occurred.');
+      setErrorMessage('حدث خطأ أثناء المعالجة.');
     }
   };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setProcessedText(linkifyTextUTS58(textInput));
+    }, 200); // Add small debounce for better performance
+    return () => clearTimeout(timeout);
+  }, [textInput]);
   return (
     <>
       {/* Hero Section */}
@@ -93,48 +173,42 @@ const ToolsPage: React.FC = () => {
       <Section background="light" id="translator">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="section-title">مترجم أسماء النطاقات</h2>
+            <h2 className="section-title">محول روابط النص (تلقائي)</h2>
             <p className="text-lg text-gray-700 mb-6">
-              أداة الترجمة المتقدمة تساعدك في تحويل أسماء النطاقات بين النصوص واللغات المختلفة،
-              بما في ذلك العربية والصينية والسيريلية والمزيد.
+              كل شيء يتم تحويله إلى روابط بمجرد الكتابة، دون الحاجة لأي أزرار!
             </p>
             <div className="mt-8">
-              <input
-                type="text"
-                value={domainInput}
-                onChange={(e) => setDomainInput(e.target.value)}
+              <textarea
+                value={textInput}
+                onChange={(e) => setTextInput(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 mb-4"
-                placeholder="example.com أو مثال.عربي"
+                placeholder="مثلاً: contact@مثال.عربي أو هاكاثون.البحرين"
+                rows={6}
               />
-              <Button variant="primary" onClick={handleTranslate}>
-                ترجم
-              </Button>
-              {resultLink && (
-                <div className="mt-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">النتيجة:</h4>
-                  <a
-                    href={resultLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary-600 hover:underline"
-                  >
-                    {resultLink}
-                  </a>
-                </div>
-              )}
-              {errorMessage && (
-                <div className="mt-4 text-red-600">
-                  <p>{errorMessage}</p>
-                </div>
-              )}
+
+              <div className="mt-6">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">النتيجة:</h4>
+                <div
+                  className="p-4 bg-gray-50 rounded-md border border-gray-200 whitespace-pre-wrap"
+                  dangerouslySetInnerHTML={{ __html: processedText }}
+                />
+              </div>
             </div>
           </div>
+
           <Card className="p-8 border border-gray-200">
-            <h3 className="text-xl font-semibold mb-4">مترجم أسماء النطاقات</h3>
-            <p className="text-gray-700">
-              أدخل اسم النطاق أو البريد الإلكتروني لتحويله إلى رابط قابل للنقر باستخدام
-              تنسيق Punycode.
+            <h3 className="text-xl font-semibold mb-4">محول روابط النص - دعم القبول العالمي</h3>
+            <p className="text-gray-700 mb-4">
+              يدعم النصوص متعددة اللغات ومعيار Unicode Linkification (UTS58).
             </p>
+            <div className="mt-4 bg-gray-100 p-3 rounded-md">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">أمثلة:</h4>
+              <ul className="text-sm text-gray-600 space-y-2">
+                <li>• النظام.عربي</li>
+                <li>• contact@مثال.عربي</li>
+                <li>• زورونا على هاكاثون.البحرين</li>
+              </ul>
+            </div>
           </Card>
         </div>
       </Section>

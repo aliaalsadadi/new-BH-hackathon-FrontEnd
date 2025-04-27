@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Shield } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
@@ -8,6 +8,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const navigate = useNavigate();
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,18 +36,21 @@ const LoginPage: React.FC = () => {
       const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: verificationCode }),
+        body: JSON.stringify({ email, code: verificationCode })
       });
       if (res.ok) {
-        alert('Logged in successfully!');
-        // Redirect to dashboard maybe
+        const userData = await res.json();
+        // Persist user info (email, name, progress) to localStorage
+        localStorage.setItem('user', JSON.stringify(userData));
+        // Redirect to main app (e.g., lessons page) after login
+        navigate('/learn');
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to verify code.');
       }
     } catch (error) {
       console.error(error);
-      alert('An error occurred.');
+      alert('An error occurred during login.');
     }
   };
 

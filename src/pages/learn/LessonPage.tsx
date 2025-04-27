@@ -54,11 +54,34 @@ const LessonPage: React.FC = () => {
       const finalScore = calculateScore(newAnswers);
       setScore(finalScore);
       setQuizCompleted(true);
-      
+
       if (finalScore >= 70) {
         setShowConfetti(true);
-        completeLesson(level, parseInt(lessonId || '1'), finalScore);
-        
+        const lessonIdNum = parseInt(lessonId || '1');
+        completeLesson(level, lessonIdNum, finalScore);
+
+        // Immediately send progress to backend for persistence
+        const storedUserStr = localStorage.getItem('user');
+        if (storedUserStr) {
+          const storedUser = JSON.parse(storedUserStr);
+          fetch(`${import.meta.env.VITE_BASEURL}/api/progress/update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: storedUser.email,
+              level: level,
+              lessonId: lessonIdNum,
+              score: finalScore
+            })
+          })
+            .then(response => {
+              if (!response.ok) {
+                console.error('Failed to update progress on server');
+              }
+            })
+            .catch(err => console.error('Network error updating progress:', err));
+        }
+
         // Check for newly earned badge
         const badgeId = getBadgeId(level, parseInt(lessonId || '1'));
         if (badgeId && badges[badgeId] && !badges[badgeId].earned) {
@@ -82,11 +105,11 @@ const LessonPage: React.FC = () => {
 
   const calculateScore = (userAnswers: number[]): number => {
     if (!lesson?.quiz.questions) return 0;
-    
+
     const correctAnswers = userAnswers.filter((answer, index) => {
       return answer === lesson.quiz.questions[index].correctAnswer;
     }).length;
-    
+
     return Math.round((correctAnswers / lesson.quiz.questions.length) * 100);
   };
 
@@ -94,15 +117,15 @@ const LessonPage: React.FC = () => {
     const levels = ['beginner', 'intermediate', 'advanced'];
     const currentLevelIndex = levels.indexOf(level);
     const currentLevelLessons = lessons[level] || [];
-    
-    return currentLevelIndex === levels.length - 1 && 
-           parseInt(lessonId || '1') === currentLevelLessons.length;
+
+    return currentLevelIndex === levels.length - 1 &&
+      parseInt(lessonId || '1') === currentLevelLessons.length;
   };
 
   const handleNextLesson = () => {
     const nextLessonId = parseInt(lessonId || '1') + 1;
     const currentLevelLessons = lessons[level] || [];
-    
+
     if (isLastLesson()) {
       setShowCompletion(true);
     } else if (nextLessonId <= currentLevelLessons.length) {
@@ -126,7 +149,7 @@ const LessonPage: React.FC = () => {
   if (showCompletion) {
     return (
       <div className="min-h-screen bg-gradient-to-r from-primary-800 to-secondary-800 flex items-center justify-center px-4">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -147,16 +170,16 @@ const LessonPage: React.FC = () => {
                 شهادتك في طريقها إليك عبر البريد الإلكتروني.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  to="/learn" 
+                <Button
+                  to="/learn"
                   variant="primary"
                   size="lg"
                   leftIcon={<Brain className="w-5 h-5" />}
                 >
                   العودة إلى صفحة التعلم
                 </Button>
-                <Button 
-                  to="/resources" 
+                <Button
+                  to="/resources"
                   variant="outline"
                   size="lg"
                   leftIcon={<ArrowRight className="w-5 h-5" />}
@@ -183,7 +206,7 @@ const LessonPage: React.FC = () => {
     <>
       <div className="relative bg-gradient-to-r from-primary-800 to-secondary-800 text-white py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div 
+          <motion.div
             className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -212,12 +235,12 @@ const LessonPage: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
-                  <div 
+                  <div
                     className="prose max-w-none"
                     dangerouslySetInnerHTML={{ __html: lesson.content }}
                   />
                   <div className="mt-8 flex justify-end">
-                    <Button 
+                    <Button
                       variant="primary"
                       onClick={() => setShowQuiz(true)}
                       rightIcon={<ArrowRight className="w-5 h-5" />}
@@ -247,11 +270,11 @@ const LessonPage: React.FC = () => {
                           <span className="text-gray-500">تقدم الاختبار</span>
                         </div>
                         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <motion.div 
+                          <motion.div
                             className="h-2 bg-primary-600 rounded-full"
                             initial={{ width: 0 }}
-                            animate={{ 
-                              width: `${((currentQuestion + 1) / lesson.quiz.questions.length) * 100}%` 
+                            animate={{
+                              width: `${((currentQuestion + 1) / lesson.quiz.questions.length) * 100}%`
                             }}
                             transition={{ duration: 0.3 }}
                           />
@@ -281,16 +304,15 @@ const LessonPage: React.FC = () => {
                       </div>
                     </>
                   ) : (
-                    <motion.div 
+                    <motion.div
                       className="text-center"
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5 }}
                     >
                       {showConfetti && <SuccessConfetti />}
-                      <div className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 ${
-                        score >= 70 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
-                      }`}>
+                      <div className={`w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6 ${score >= 70 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                        }`}>
                         {score >= 70 ? (
                           <CheckCircle className="w-12 h-12" />
                         ) : (

@@ -4,14 +4,28 @@ import { Menu, X, Globe, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
 
 const Header: React.FC = () => {
+  const [user, setUser] = useState<{ email: string; fullname?: string } | null>(null);
+
+  useEffect(() => {
+    // On mount, check if user info is stored from a previous session
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    // if using routing, you might navigate to home or login page
+  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -37,10 +51,9 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-4'
-      }`}
+    <header
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-4'
+        }`}
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
@@ -58,8 +71,7 @@ const Header: React.FC = () => {
                   key={item.name}
                   to={item.path}
                   className={({ isActive }) =>
-                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${
-                      isActive ? 'text-primary-600' : 'text-gray-700'
+                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${isActive ? 'text-primary-600' : 'text-gray-700'
                     }`
                   }
                 >
@@ -75,8 +87,7 @@ const Header: React.FC = () => {
                   key={item.name}
                   to={item.path}
                   className={({ isActive }) =>
-                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${
-                      isActive ? 'text-primary-600' : 'text-gray-700'
+                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${isActive ? 'text-primary-600' : 'text-gray-700'
                     }`
                   }
                 >
@@ -92,8 +103,7 @@ const Header: React.FC = () => {
                   key={item.name}
                   to={item.path}
                   className={({ isActive }) =>
-                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${
-                      isActive ? 'text-primary-600' : 'text-gray-700'
+                    `px-3 py-2 text-base font-medium transition-colors hover:text-primary-600 ${isActive ? 'text-primary-600' : 'text-gray-700'
                     }`
                   }
                 >
@@ -103,16 +113,36 @@ const Header: React.FC = () => {
             </div>
 
             {/* Auth Buttons */}
-            <div className="flex items-center space-x-2 mr-4 border-r border-gray-200 pr-4">
-              <Button to="/login" variant="outline" size="sm">تسجيل الدخول</Button>
-              <Button to="/signup" variant="primary" size="sm">إنشاء حساب</Button>
+            <div className="flex items-center space-x-2">
+              {user ? (
+                <>
+                  {/* Display the user's name if available, otherwise their email */}
+                  <span className="text-gray-700 font-medium">
+                    {user.fullname ? user.fullname : user.email}
+                  </span>
+                  {/* (Optional) Logout button */}
+                  <Button onClick={handleLogout} variant="outline" size="sm">
+                    خروج
+                  </Button>
+                </>
+              ) : (
+                <>
+                  {/* If no user is logged in, show Login and Signup buttons */}
+                  <Button to="/login" variant="outline" size="sm">تسجيل الدخول</Button>
+                  <Button to="/signup" variant="primary" size="sm">إنشاء حساب</Button>
+                </>
+              )}
             </div>
           </nav>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <Link to="/login" className="text-gray-700 hover:text-primary-600 ml-4">تسجيل الدخول</Link>
-            <button 
+            {user ? (
+              <span className="text-gray-700 mr-4">{user.fullname || user.email}</span>
+            ) : (
+              <Link to="/login" className="text-gray-700 hover:text-primary-600 ml-4">تسجيل الدخول</Link>
+            )}
+            <button
               className="text-gray-700 hover:text-primary-600 p-2"
               onClick={toggleMenu}
               aria-label="Toggle menu"
@@ -134,8 +164,7 @@ const Header: React.FC = () => {
                   to={item.path}
                   onClick={() => setIsMenuOpen(false)}
                   className={({ isActive }) =>
-                    `px-4 py-2 text-base font-medium transition-colors hover:text-primary-600 hover:bg-gray-50 rounded-md ${
-                      isActive ? 'text-primary-600 bg-primary-50' : 'text-gray-700'
+                    `px-4 py-2 text-base font-medium transition-colors hover:text-primary-600 hover:bg-gray-50 rounded-md ${isActive ? 'text-primary-600 bg-primary-50' : 'text-gray-700'
                     }`
                   }
                 >
