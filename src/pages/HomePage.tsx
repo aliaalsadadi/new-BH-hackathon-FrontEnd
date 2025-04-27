@@ -103,216 +103,153 @@ const HomePage: React.FC = () => {
         </div>
       </Section>
 
-      {/* About Section (Enhanced) */}
-      <Section background="light" id="about-preview">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center bg-primary-100 px-3 py-1 rounded-full mb-4">
-              <span className="text-primary-700 font-medium">تعريف</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">عن القبول العالمي (UA)</h2>
-            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              القبول العالمي (UA) يضمن أن جميع أسماء النطاقات وعناوين البريد الإلكتروني يمكن استخدامها من قبل جميع التطبيقات والأجهزة والأنظمة المتصلة بالإنترنت.
-            </p>
-            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              مع استمرار توسع الإنترنت بنطاقات المستوى الأعلى الجديدة بمختلف النصوص واللغات،
-              يصبح القبول العالمي ضرورياً لتجربة إنترنت عالمية وشاملة حقاً.
-            </p>
-            <div className="mt-8">
-              <Button to="/about" rightIcon={<ArrowRight size={18} />} className="bg-primary-600 hover:bg-primary-700">
-                تعرف أكثر على القبول العالمي
-              </Button>
-            </div>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="p-8 border border-gray-200">
-              <h3 className="text-2xl font-bold mb-6 text-gray-900 text-right">ما هو القبول العالمي (UA)؟</h3>
-              <div className="space-y-4 text-gray-600">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-              <ul className="mt-8 space-y-6 text-right">
-                <li className="flex items-start">
-                  <div>
-                    <h4 className="font-medium text-gray-900">الشمولية</h4>
-                    <p className="text-gray-600">ضمان دعم جميع اللغات والنصوص عبر الإنترنت</p>
-                  </div>
-                  <div className="rounded-full bg-primary-100 p-1 mr-3 ml-3 mt-1">
-                    <Globe className="w-5 h-5 text-primary-600" />
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div>
-                    <h4 className="font-medium text-gray-900">سهولة الوصول</h4>
-                    <p className="text-gray-600">جعل الإنترنت في متناول المليارات من المستخدمين الجدد</p>
-                  </div>
-                  <div className="rounded-full bg-primary-100 p-1 mr-3 ml-3 mt-1">
-                    <Users className="w-5 h-5 text-primary-600" />
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div>
-                    <h4 className="font-medium text-gray-900">الابتكار</h4>
-                    <p className="text-gray-600">دفع التقنيات والمعايير الجديدة للتواصل العالمي</p>
-                  </div>
-                  <div className="rounded-full bg-primary-100 p-1 mr-3 ml-3 mt-1">
-                    <Lock className="w-5 h-5 text-primary-600" />
-                  </div>
-                </li>
-              </ul>
-            </Card>
-          </motion.div>
-        </div>
-      </Section>
-
-      {/* Features Section (Enhanced) */}
-      <Section 
-        title="ميزات ذكية مدعومة بالذكاء الاصطناعي" 
-        subtitle="استكشف أدواتنا المبتكرة لفهم وتطبيق مبادئ القبول العالمي"
-        centered 
-        background="primary"
+        {/* About Section */}
+<Section background="light" id="about-preview">
+  <div className="grid md:grid-cols-2 gap-12 items-center">
+    {/* Left Side */}
+    <div>
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card interactive className="p-6 text-center h-full">
-              <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-accent-600">
-                  <path d="M12 20h9m-9-3h7m-7-3h9m-9-3h7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">تعلم</h3>
-              <p className="text-gray-600 mb-4">وحدات تعليمية تفاعلية حول القبول العالمي تساعدك على فهم المفاهيم الأساسية</p>
-              <Button to="/learn" variant="ghost" size="sm" className="mt-auto text-accent-600 hover:text-accent-700 hover:bg-accent-50">
-                ابدأ التعلم
-              </Button>
-            </Card>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Card interactive className="p-6 text-center h-full">
-              <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-accent-600">
-                  <path d="M21 13v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7" />
-                  <path d="M16 3h5v5" />
-                  <path d="M10 14 21 3" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">المصادر</h3>
-              <p className="text-gray-600 mb-4">الوصول إلى الأدلة والوثائق والأدوات التي تساعدك على تطبيق معايير القبول العالمي</p>
-              <Button to="/resources" variant="ghost" size="sm" className="mt-auto text-accent-600 hover:text-accent-700 hover:bg-accent-50">
-                عرض المصادر
-              </Button>
-            </Card>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card interactive className="p-6 text-center h-full">
-              <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-accent-600">
-                  <path d="M14 7v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1" />
-                  <path d="M7 12v-1a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">المجتمع</h3>
-              <p className="text-gray-600 mb-4">انضم إلى مجتمعنا العالمي من مناصري القبول العالمي وشارك في الفعاليات والمؤتمرات</p>
-              <Button to="/contact" variant="ghost" size="sm" className="mt-auto text-accent-600 hover:text-accent-700 hover:bg-accent-50">
-                انضم الآن
-              </Button>
-            </Card>
-          </motion.div>
-        </div>
-      </Section>
+        <h2 className="section-title text-right" dir="rtl">عن القبول العالمي (UA)</h2>
+        <p className="text-lg text-gray-700 mb-6 text-right" dir="rtl">
+          القبول العالمي (UA) هو المبادرة التي تضمن قدرة جميع مستخدمي الإنترنت على الوصول إلى أي نطاق إلكتروني أو عنوان بريد إلكتروني - مهما كانت اللغة أو النص المستخدم.
+        </p>
+        <p className="text-lg text-gray-700 mb-6 text-right" dir="rtl">
+          مع ظهور نطاقات جديدة بلغات مختلفة مثل العربية، الصينية، والروسية، أصبح من الضروري تحديث أنظمتنا لدعم التنوع اللغوي. القبول العالمي يجعل الإنترنت أكثر شمولاً وعدلاً للجميع.
+        </p>
+        <p className="text-lg text-gray-700 mb-6 text-right" dir="rtl">
+          UA لا يقتصر فقط على المجالات الجديدة، بل يشمل التأكد من أن التطبيقات، والمواقع، والبريد الإلكتروني تتعامل بشكل صحيح مع أسماء النطاقات الدولية (IDNs) وعناوين البريد الإلكتروني العالمية (EAI).
+        </p>
 
-      {/* Testimonials Section (New) */}
-      <Section background="light" id="testimonials">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center bg-primary-100 px-3 py-1 rounded-full mb-4">
-            <span className="text-primary-700 font-medium">تجارب الآخرين</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">ماذا يقول المستخدمون عنا</h2>
+        <div className="mt-8 text-right" dir="rtl">
+          <Button to="/about" rightIcon={<ArrowRight size={18} />} className="hover:scale-105 transition-transform">
+            تعرف أكثر على القبول العالمي
+          </Button>
         </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((item) => (
-            <motion.div
-              key={item}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: item * 0.1 }}
-            >
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 ml-3"></div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">اسم المستخدم</h4>
-                    <p className="text-gray-500 text-sm">شركة / منظمة</p>
-                  </div>
-                </div>
-                <p className="text-gray-700">
-                  "ساعدتنا منصة القبول العالمي في فهم كيفية جعل موقعنا متوافقاً مع جميع أنواع عناوين البريد الإلكتروني وأسماء النطاقات، مما وسع من نطاق وصولنا عالمياً."
-                </p>
-                <div className="mt-4 flex text-yellow-500">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                    </svg>
-                  ))}
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </Section>
+      </motion.div>
+    </div>
 
-      {/* CTA Section (Enhanced) */}
-      <Section background="accent" className="text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+    {/* Right Side */}
+    <motion.div
+      initial={{ opacity: 0, x: 50 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="bg-white p-8 rounded-lg shadow-md border border-gray-200"
+    >
+      <h3 className="text-2xl font-bold mb-6 text-gray-900 text-right" dir="rtl">ما هو القبول العالمي (UA)؟</h3>
+      <div className="space-y-4 text-gray-600 mb-8" dir="rtl">
+        <p>القبول العالمي هو الركيزة الأساسية لبناء إنترنت متكافئ، حيث يستطيع أي شخص التواصل دون عوائق لغوية أو تقنية.</p>
+        <p>من خلال تبني UA، نُمكّن المليارات من الأفراد من أن يكونوا جزءاً فعالاً من شبكة الويب العالمية.</p>
+      </div>
+
+      <ul className="mt-8 space-y-6" dir="rtl">
+        <motion.li
+          whileHover={{ scale: 1.03 }}
+          className="flex items-start transition-transform"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">ابدأ رحلة التعلم</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            اكتشف كيف يجعل القبول العالمي الإنترنت أكثر شمولية وسهولة في الوصول للجميع.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button to="/learn" size="lg" variant="primary" className="bg-white text-accent-600 hover:bg-gray-100">
-              انتقل إلى صفحة التعلم
-            </Button>
-            <Button to="/contact" size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
-              تواصل معنا
-            </Button>
+          <div className="rounded-full bg-primary-100 p-2 ml-4 mt-1">
+            <Globe className="w-6 h-6 text-primary-600" />
           </div>
-        </motion.div>
+          <div>
+            <h4 className="font-semibold text-gray-900">الشمولية</h4>
+            <p className="text-gray-600">دعم جميع اللغات والرموز والنصوص ليكون الإنترنت حقاً مساحة لكل البشر.</p>
+          </div>
+        </motion.li>
+
+        <motion.li
+          whileHover={{ scale: 1.03 }}
+          className="flex items-start transition-transform"
+        >
+          <div className="rounded-full bg-primary-100 p-2 ml-4 mt-1">
+            <Users className="w-6 h-6 text-primary-600" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900">سهولة الوصول</h4>
+            <p className="text-gray-600">فتح الأبواب الرقمية أمام المليارات من المستخدمين الجدد بلغاتهم المحلية.</p>
+          </div>
+        </motion.li>
+
+        <motion.li
+          whileHover={{ scale: 1.03 }}
+          className="flex items-start transition-transform"
+        >
+          <div className="rounded-full bg-primary-100 p-2 ml-4 mt-1">
+            <Lock className="w-6 h-6 text-primary-600" />
+          </div>
+          <div>
+            <h4 className="font-semibold text-gray-900">الابتكار</h4>
+            <p className="text-gray-600">تحفيز الإبداع وتطوير معايير وتقنيات جديدة تجعل التواصل أكثر مرونة وشمولية.</p>
+          </div>
+        </motion.li>
+      </ul>
+    </motion.div>
+  </div>
+</Section>
+
+
+    
+
+      {/* Features Preview */}
+      <Section title="ميزات ذكية مدعومة بالذكاء الاصطناعي" centered>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card interactive className="p-6 text-center">
+            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary-600">
+                <path d="M12 20h9m-9-3h7m-7-3h9m-9-3h7" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">تعلم</h3>
+            <p className="text-gray-600">وحدات تعليمية تفاعلية حول القبول العالمي</p>
+            <Button to="/learn" variant="ghost" size="sm" className="mt-4">
+              ابدأ التعلم
+            </Button>
+          </Card>
+          
+          <Card interactive className="p-6 text-center">
+            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary-600">
+                <path d="M21 13v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7" />
+                <path d="M16 3h5v5" />
+                <path d="M10 14 21 3" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">المصادر</h3>
+            <p className="text-gray-600">تعرف على الوثائق والمستندات التقنيى الرسمية</p>
+            <Button to="/resources" variant="ghost" size="sm" className="mt-4">
+              عرض المصادر
+            </Button>
+          </Card>
+          
+          <Card interactive className="p-6 text-center">
+            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary-600">
+                <path d="M14 7v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1" />
+                <path d="M7 12v-1a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">الأدوات</h3>
+            <p className="text-gray-600">اكتشف الأدوات التي تساعدك على فهم القبول العالمي</p>
+            <Button to="/contact" variant="ghost" size="sm" className="mt-4">
+              اكتشف الان
+            </Button>
+          </Card>
+        </div>
+      </Section>
+
+       {/* CTA Section */}
+       <Section background="primary" className="text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">ابدأ رحلة التعلم</h2>
+        <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          اكتشف كيف يجعل القبول العالمي الإنترنت أكثر شمولية وسهولة في الوصول للجميع.
+        </p>
+        <Button to="/learn" size="lg" variant="accent" className="mx-auto">
+          انتقل إلى صفحة التعلم
+        </Button>
       </Section>
     </>
   );
