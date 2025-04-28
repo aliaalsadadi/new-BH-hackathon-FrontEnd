@@ -96,7 +96,7 @@ const ToolsPage: React.FC = () => {
         const asciiUrl = fullMatch.replace(domainPart, asciiDomain);
         const href = hasProtocol ? asciiUrl : `http://${asciiUrl}`;
 
-        const replacement = `<a href="${href}" class="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
+        const replacement = `<a href="${href}" class="text-primary-600 hover:underline underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
 
         // Store this replacement for later
         replacements.push({
