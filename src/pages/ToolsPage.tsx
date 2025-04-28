@@ -185,10 +185,10 @@ const ToolsPage: React.FC = () => {
           />
 
           <FeatureCard
-            title="ABC"
+            title="AnalyzeCode"
             description="أداة متقدمة لتحليل المستندات والنصوص"
             icon={<FileText className="w-6 h-6" />}
-            link="/tools/abc"
+            link="/tools/analyzeCode"
           />
         </div>
       </Section>

@@ -98,11 +98,74 @@ const AbcToolPage: React.FC = () => {
             </form>
 
             {result && (
-              <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-                <h3 className="text-lg font-semibold mb-3">نتائج التحليل</h3>
-                <pre className="whitespace-pre-wrap text-gray-700">{result}</pre>
-              </div>
-            )}
+  <div className="mt-8 p-6 bg-gray-50 rounded-lg space-y-4">
+    <h3 className="text-lg font-semibold mb-3">نتائج التحليل</h3>
+
+    <div className="space-y-2">
+      {/* Extract and Format Report */}
+      {(() => {
+  const ratingMatch = result.match(/التقييم \(من 100\): (\d+)/);
+  const problemsMatch = result.match(/المشاكل المكتشفة:\n([\s\S]*?)\n\n/);
+  const improvementsMatch = result.match(/التحسينات المقترحة:\n([\s\S]*?)\n\n/);
+  const commentMatch = result.match(/تعليق عام:\n([\s\S]*)/);
+
+  const rating = ratingMatch ? ratingMatch[1] : null;
+
+  const cleanList = (raw: string) =>
+    raw
+      .trim()
+      .split('\n')
+      .map(line => line.replace(/^-\s*/, '').trim()) // <<< إزالة الشرطة
+      .filter(Boolean);
+
+  const problems = problemsMatch ? cleanList(problemsMatch[1]) : [];
+  const improvements = improvementsMatch ? cleanList(improvementsMatch[1]) : [];
+  const comment = commentMatch ? commentMatch[1].trim() : null;
+
+  return (
+    <div className="space-y-6">
+      {rating && (
+        <div>
+          <h4 className="font-semibold text-primary-600">التقييم:</h4>
+          <p className="text-gray-700">{rating} / 100</p>
+        </div>
+      )}
+
+      {problems.length > 0 && (
+        <div>
+          <h4 className="font-semibold text-primary-600">المشاكل المكتشفة:</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            {problems.map((p, idx) => (
+              <li key={idx}>{p}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {improvements.length > 0 && (
+        <div>
+          <h4 className="font-semibold text-primary-600">التحسينات المقترحة:</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            {improvements.map((i, idx) => (
+              <li key={idx}>{i}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {comment && (
+        <div>
+          <h4 className="font-semibold text-primary-600">تعليق عام:</h4>
+          <p className="text-gray-700 whitespace-pre-line">{comment}</p>
+        </div>
+      )}
+    </div>
+  );
+})()}
+
+    </div>
+  </div>
+)}
           </Card>
         </div>
       </Section>
