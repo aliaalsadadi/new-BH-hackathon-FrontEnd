@@ -251,7 +251,7 @@ const HomePage: React.FC = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">الأدوات</h3>
             <p className="text-gray-600">اكتشف الأدوات التي تساعدك على فهم القبول العالمي</p>
-            <Button to="/contact" variant="ghost" size="sm" className="mt-4">
+            <Button to="/tools" variant="ghost" size="sm" className="mt-4">
               اكتشف الان
             </Button>
           </Card>
