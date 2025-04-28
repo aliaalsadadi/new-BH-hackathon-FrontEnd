@@ -35,7 +35,6 @@ const Header: React.FC = () => {
 
   const secondaryNavItems = [
     { name: 'اشترك', path: '/subscribe' },
-    { name: 'اتصل بنا', path: '/contact' },
   ];
 
   return (
@@ -46,8 +45,8 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2 text-primary-700 font-bold text-xl">
-            <Globe size={24} className="text-primary-600" />
-            <span>القبول العالمي</span>
+            <img src="/1024U.png" alt="القبول العالمي" className="w-6 h-6" />
+            <span>بوابة القبول العالمي</span>
           </NavLink>
 
           {/* Desktop Navigation */}
