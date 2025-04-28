@@ -321,7 +321,7 @@ const ToolsPage: React.FC = () => {
         </div> */}
       </Section>
 
-      {/* Other Features */}
+      {/* Other Features
       <Section background="light" title="ميزات إضافية" centered>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Card className="p-6">
@@ -351,7 +351,7 @@ const ToolsPage: React.FC = () => {
             <Button variant="outline" size="sm">عرض المصادر</Button>
           </Card>
         </div>
-      </Section>
+      </Section> */}
 
       {/* CTA Section */}
       <Section className="text-center">
