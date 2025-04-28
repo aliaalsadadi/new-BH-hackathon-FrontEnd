@@ -104,6 +104,20 @@ const LearnPage: React.FC = () => {
         </div>
       </div>
 
+      <Section className="text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">مستعد لبدء التعلم؟</h2>
+        <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+          ابدأ رحلتك في القبول العالمي مع منصتنا التفاعلية للتعلم
+        </p>
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={startLearning}
+        >
+          خذ اختبار تحديد المستوى
+        </Button>
+      </Section>
+      
       {/* Badge Showcase Section */}
       <Section title="شاراتك" subtitle="اجمع الشارات وتقدم في رحلة تعلم القبول العالمي" centered>
         <BadgeShowcase badges={badges} />
@@ -127,19 +141,7 @@ const LearnPage: React.FC = () => {
         </div>
       </Section>
 
-      <Section className="text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">مستعد لبدء التعلم؟</h2>
-        <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-          ابدأ رحلتك في القبول العالمي مع منصتنا التفاعلية للتعلم
-        </p>
-        <Button
-          size="lg"
-          variant="primary"
-          onClick={startLearning}
-        >
-          خذ اختبار تحديد المستوى
-        </Button>
-      </Section>
+    
     </>
   );
 };

@@ -120,7 +120,7 @@ const ResourcesPage: React.FC = () => {
       <img 
         src="egypt.png" 
         alt="بوابة إلكترونية تدعم اللغة العربية" 
-        className="w-full h-48 object-contain"
+        className="w-full h-48 object-cover"
       />
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2 text-gray-900">موقع وزارة الاتصالات المصرية</h3>

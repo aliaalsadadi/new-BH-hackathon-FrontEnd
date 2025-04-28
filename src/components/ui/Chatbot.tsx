@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { MessageSquare, X, Send, Upload } from 'lucide-react';
+import { MessageSquare, X, Send, Upload, Loader2 } from 'lucide-react';
 import Button from './Button';
+
+const LoadingDots = () => (
+  <div className="flex space-x-1 items-center">
+    <div className="w-2 h-2 bg-primary-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+    <div className="w-2 h-2 bg-primary-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+    <div className="w-2 h-2 bg-primary-600 rounded-full animate-bounce"></div>
+  </div>
+);
 
 const Chatbot: React.FC = () => {
   const BASEURL = import.meta.env.VITE_BASEURL;
@@ -95,27 +103,35 @@ const Chatbot: React.FC = () => {
   return (
     <div className="fixed bottom-4 left-4 z-50">
       {isOpen ? (
-        <div className="bg-white rounded-2xl shadow-2xl w-96 md:w-[500px] flex flex-col border border-gray-300 min-h-[400px]">
-          <div className="p-4 border-b border-gray-300 flex justify-between items-center bg-primary-600 text-white rounded-t-2xl">
+        <div className="bg-white rounded-2xl shadow-2xl w-96 md:w-[500px] flex flex-col border border-gray-300 min-h-[400px] transition-all duration-300 ease-in-out">
+          <div className="p-4 border-b border-gray-300 flex justify-between items-center bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-t-2xl">
             <div className="flex items-center gap-2">
-              <MessageSquare className="w-6 h-6" />
+              <div className="bg-white/20 p-2 rounded-lg">
+                <MessageSquare className="w-5 h-5" />
+              </div>
               <span className="font-bold text-lg">مساعد التوافق الشامل</span>
             </div>
-            <button onClick={toggleChat} aria-label="إغلاق المحادثة">
-              <X className="w-6 h-6" />
+            <button 
+              onClick={toggleChat}
+              className="hover:bg-white/20 p-2 rounded-full transition-colors duration-200"
+              aria-label="إغلاق المحادثة"
+            >
+              <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[600px]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[600px] scroll-smooth">
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${message.isUser ? 'justify-start' : 'justify-end'}`}
+                className={`flex ${message.isUser ? 'justify-start' : 'justify-end'} animate-fade-in`}
               >
                 <div
-                  className={`rounded-xl px-4 py-2 max-w-[80%] ${message.isUser
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-800'}`}
+                  className={`rounded-2xl px-4 py-2 max-w-[80%] shadow-sm transition-all duration-200 ${
+                    message.isUser
+                      ? 'bg-gradient-to-br from-primary-600 to-primary-700 text-white'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
                   style={{
                     textAlign: isArabic(message.text) ? 'right' : 'left',
                     direction: isArabic(message.text) ? 'rtl' : 'ltr',
@@ -127,14 +143,17 @@ const Chatbot: React.FC = () => {
             ))}
             {loading && (
               <div className="flex justify-end">
-                <div className="rounded-xl px-4 py-2 max-w-[80%] bg-gray-100 text-gray-800">
-                  جاري التحميل...
+                <div className="rounded-2xl px-4 py-3 bg-gray-100 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="text-gray-600">جاري التفكير</span>
+                    <LoadingDots />
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4">
+          <form onSubmit={handleSubmit} className="border-t border-gray-200 p-4 bg-gray-50 rounded-b-2xl">
             <div className="flex gap-2 items-center">
               <input
                 type="text"
@@ -142,13 +161,29 @@ const Chatbot: React.FC = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="اكتب رسالتك..."
                 disabled={loading || fileUploading}
-                className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:bg-gray-100"
+                className="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 transition-all duration-200"
               />
-              <Button type="submit" variant="primary" className="px-4" disabled={loading || fileUploading}>
+              <Button 
+                type="submit" 
+                variant="primary"
+                className="px-4 rounded-xl hover:scale-105 transition-transform duration-200"
+                disabled={loading || fileUploading}
+              >
                 <Send className="w-5 h-5" />
               </Button>
-              <label htmlFor="file-upload" className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg transition ${loading || fileUploading ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300'}`}>
-                <Upload className="w-5 h-5" />
+              <label 
+                htmlFor="file-upload" 
+                className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200 ${
+                  loading || fileUploading 
+                    ? 'bg-gray-300 cursor-not-allowed' 
+                    : 'bg-gray-200 hover:bg-gray-300 hover:scale-105'
+                }`}
+              >
+                {fileUploading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Upload className="w-5 h-5" />
+                )}
                 <span className="hidden md:block text-sm font-medium">رفع ملف</span>
                 <input
                   id="file-upload"
@@ -166,7 +201,7 @@ const Chatbot: React.FC = () => {
         <Button
           onClick={toggleChat}
           variant="primary"
-          className="rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
+          className="rounded-full w-16 h-16 shadow-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-primary-600 to-primary-700"
           aria-label="فتح المحادثة"
         >
           <MessageSquare className="w-7 h-7" />

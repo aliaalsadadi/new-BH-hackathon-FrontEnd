@@ -115,10 +115,10 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   {/* If no user is logged in, show Login and Signup buttons */}
-                  <Button to="/login" variant="outline" size="sm">
+                  <Button to="/login" variant="outline" size="sm" className='mx-1'>
                     تسجيل الدخول
                   </Button>
-                  <Button to="/signup" variant="primary" size="sm">
+                  <Button to="/signup" variant="primary" size="sm" className='mx-1'>
                     إنشاء حساب
                   </Button>
                 </>
