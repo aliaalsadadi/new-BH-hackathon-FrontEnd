@@ -10,7 +10,7 @@ const ResourcesPage: React.FC = () => {
     <>
       {/* Hero Section */}
       <div className="relative bg-secondary-800 text-white py-24 md:py-32">
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container px-4 md:px-6">
           <motion.div 
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -32,7 +32,7 @@ const ResourcesPage: React.FC = () => {
             <div className="p-6 flex-grow">
               <div className="flex items-start mb-4">
                 <FileText className="w-8 h-8 text-primary-600 ml-3" />
-                <h3 className="text-xl font-semibold text-gray-900">دليل تطبيق القبول العالمي الشامل</h3>
+                <h3 className="text-xl font-semibold text-center text-gray-900">دليل تطبيق القبول العالمي الشامل</h3>
               </div>
               <p className="text-gray-700 mb-4">
               يغطي دليل تطبيق القبول الشامل الخطوات الأساسية لقبول ومعالجة وعرض أسماء النطاقات وعناوين البريد الإلكتروني الدولية بطريقة صحيحة ومتسقة
@@ -112,63 +112,93 @@ const ResourcesPage: React.FC = () => {
       </Section>
 
       {/* Case Studies */}
-      <Section background="light" title="دراسات الحالة" subtitle="تعلم من تطبيقات القبول العالمي الناجحة">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="border border-gray-200">
-            <img 
-              src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-              alt="فريق يتعاون على المشروع" 
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">مزود البريد الإلكتروني العالمي</h3>
-              <p className="text-gray-700 mb-4">
-                كيف نجح مزود بريد إلكتروني رئيسي في تطبيق دعم البريد الإلكتروني الدولي،
-                مما يتيح للمستخدمين إنشاء واستخدام عناوين البريد الإلكتروني بلغاتهم الأصلية.
-              </p>
-              <Button variant="ghost" className="text-primary-600 hover:text-primary-700 p-0 h-auto" rightIcon={<ExternalLink size={16} />}>
-                قراءة دراسة الحالة
-              </Button>
-            </div>
-          </Card>
-          
-          <Card className="border border-gray-200">
-            <img 
-              src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-              alt="شخص يستخدم الحاسوب المحمول" 
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">منصة التجارة الإلكترونية</h3>
-              <p className="text-gray-700 mb-4">
-                كيف قامت منصة تجارة إلكترونية دولية بتحديث أنظمتها للتعامل مع
-                أسماء النطاقات وعناوين البريد الإلكتروني العربية، مما وسع نطاق وصولها للسوق.
-              </p>
-              <Button variant="ghost" className="text-primary-600 hover:text-primary-700 p-0 h-auto" rightIcon={<ExternalLink size={16} />}>
-                قراءة دراسة الحالة
-              </Button>
-            </div>
-          </Card>
-          
-          <Card className="border border-gray-200">
-            <img 
-              src="https://images.pexels.com/photos/3194518/pexels-photo-3194518.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-              alt="فريق يعمل على الكود" 
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">بوابة حكومية</h3>
-              <p className="text-gray-700 mb-4">
-                كيف طبقت حكومة وطنية القبول العالمي في بوابة خدمات المواطنين،
-                مما جعل الخدمات الرقمية أكثر سهولة للوصول لجميع المواطنين.
-              </p>
-              <Button variant="ghost" className="text-primary-600 hover:text-primary-700 p-0 h-auto" rightIcon={<ExternalLink size={16} />}>
-                قراءة دراسة الحالة
-              </Button>
-            </div>
-          </Card>
-        </div>
-      </Section>
+<Section background="light" title="دراسات الحالة" subtitle="تعلم من تطبيقات القبول العالمي الناجحة">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    {/* Study 1 */}
+    <Card className="border border-gray-200">
+      <img 
+        src="egypt.png" 
+        alt="بوابة إلكترونية تدعم اللغة العربية" 
+        className="w-full h-48 object-contain"
+      />
+      <div className="p-6">
+        <h3 className="text-xl font-semibold mb-2 text-gray-900">موقع وزارة الاتصالات المصرية</h3>
+        <p className="text-gray-700 mb-4">
+          مثال حقيقي على كيفية استخدام نطاق عربي بالكامل لدعم اللغة المحلية
+          وتمكين المستخدمين من الوصول إلى خدمات إلكترونية بلغاتهم الأم بدون عوائق.
+        </p>
+        <Button 
+          as="a"
+          href="https://xn----ymcbaaajlc6dj7bxne2c.xn--wgbh1c/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          variant="ghost" 
+          className="text-primary-600 hover:text-primary-700 p-0 h-auto" 
+          rightIcon={<ExternalLink size={16} />}
+        >
+          زيارة الموقع
+        </Button>
+      </div>
+    </Card>
+
+    {/* Study 2 */}
+    <Card className="border border-gray-200">
+      <img 
+        src="UASG.jpg" 
+        alt="موقع تعليمي عن القبول العالمي" 
+        className="w-full h-48 object-contain"
+      />
+      <div className="p-6">
+        <h3 className="text-xl font-semibold mb-2 text-gray-900">UASG.tech</h3>
+        <p className="text-gray-700 mb-4">
+          الموقع الرسمي لمجموعة دعم القبول العالمي (UASG)، الذي يقدم أبحاث وأدوات وتوصيات
+          لمساعدة المؤسسات على تطبيق معايير القبول العالمي بشكل كامل.
+        </p>
+        <Button 
+          as="a"
+          href="https://uasg.tech/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          variant="ghost" 
+          className="text-primary-600 hover:text-primary-700 p-0 h-auto" 
+          rightIcon={<ExternalLink size={16} />}
+        >
+          زيارة الموقع
+        </Button>
+      </div>
+    </Card>
+
+    {/* Study 3 */}
+    <Card className="border border-gray-200">
+      <img 
+        src="backathon-bahrain-logo-w.svg" 
+        alt="بوابة حكومية عربية" 
+        className="w-full h-48 object-cover"
+      />
+      <div className="p-6">
+        <h3 className="text-xl font-semibold mb-2 text-gray-900">هاكاثون.البحرين</h3>
+        <p className="text-gray-700 mb-4">
+          بوابة إلكترونية مبتكرة تدعم القبول العالمي للنطاقات العربية،
+          مما يعزز الشمولية الرقمية للمستخدمين العرب ويعكس التزام البحرين بالتقنيات المستقبلية.
+        </p>
+        <Button 
+          as="a"
+          href="https://xn--mgbam8grabl.xn--mgbcpq6gpa1a/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          variant="ghost" 
+          className="text-primary-600 hover:text-primary-700 p-0 h-auto" 
+          rightIcon={<ExternalLink size={16} />}
+        >
+          زيارة الموقع
+        </Button>
+      </div>
+    </Card>
+
+  </div>
+</Section>
+
 
       {/* Code Libraries */}
       <Section title="المكتبات والأدوات البرمجية" subtitle="مكتبات وأدوات مفتوحة المصدر للمساعدة في تطبيق القبول العالمي">
@@ -320,7 +350,7 @@ const ResourcesPage: React.FC = () => {
         </div>
       </Section>
 
-      {/* CTA Section */}
+      {/* CTA Section
       <Section className="text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">هل تحتاج مساعدة في التطبيق؟</h2>
         <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
@@ -329,7 +359,7 @@ const ResourcesPage: React.FC = () => {
         <Button to="/contact" size="lg" variant="primary">
           اتصل بنا
         </Button>
-      </Section>
+      </Section> */}
     </>
   );
 };
