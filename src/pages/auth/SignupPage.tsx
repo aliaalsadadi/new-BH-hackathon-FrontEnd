@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Shield, User } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
@@ -9,6 +9,7 @@ const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const navigate = useNavigate();
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,18 +37,21 @@ const SignupPage: React.FC = () => {
       const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: verificationCode, fullname: name }),
+        body: JSON.stringify({ email, code: verificationCode, fullname: name })
       });
       if (res.ok) {
-        alert('Account created successfully!');
-        // Redirect to login page maybe
+        const userData = await res.json();
+        // Save user info to localStorage for persistence across sessions
+        localStorage.setItem('user', JSON.stringify(userData));
+        // Redirect to the learning page or home page after successful signup
+        navigate('/learn');
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to verify code.');
       }
     } catch (error) {
       console.error(error);
-      alert('An error occurred.');
+      alert('An error occurred during verification.');
     }
   };
 
