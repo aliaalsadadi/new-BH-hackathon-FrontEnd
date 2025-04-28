@@ -225,7 +225,7 @@ const ToolsPage: React.FC = () => {
               <textarea
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
-                dir={getDirection(textInput)}
+                dir={textInput ? getDirection(textInput) : "rtl"}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 mb-4"
                 placeholder="مثلاً: contact@مثال.عربي أو هاكاثون.البحرين"
                 rows={6}
