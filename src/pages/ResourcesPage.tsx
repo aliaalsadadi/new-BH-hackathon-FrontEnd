@@ -19,7 +19,7 @@ const ResourcesPage: React.FC = () => {
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">المصادر</h1>
             <p className="text-xl text-gray-300">
-              أدلة ومصادر مفيدة لفهم وتطبيق القبول العالمي
+              مستندات ومصادر مفيدة لفهم وتطبيق القبول العالمي
             </p>
           </motion.div>
         </div>
@@ -32,23 +32,27 @@ const ResourcesPage: React.FC = () => {
             <div className="p-6 flex-grow">
               <div className="flex items-start mb-4">
                 <FileText className="w-8 h-8 text-primary-600 ml-3" />
-                <h3 className="text-xl font-semibold text-gray-900">دليل تطبيق القبول العالمي</h3>
+                <h3 className="text-xl font-semibold text-gray-900">دليل تطبيق القبول العالمي الشامل</h3>
               </div>
               <p className="text-gray-700 mb-4">
-                دليل شامل لتطبيق القبول العالمي في تطبيقاتك وأنظمتك.
-                يغطي التحقق والتخزين والمعالجة وعرض أسماء النطاقات وعناوين البريد الإلكتروني الدولية.
+              يغطي دليل تطبيق القبول الشامل الخطوات الأساسية لقبول ومعالجة وعرض أسماء النطاقات وعناوين البريد الإلكتروني الدولية بطريقة صحيحة ومتسقة
               </p>
               <ul className="text-gray-700 mb-4 list-disc list-inside">
-                <li>المواصفات التقنية</li>
-                <li>أمثلة التطبيق</li>
-                <li>أفضل الممارسات</li>
-                <li>المشاكل الشائعة</li>
+                <li>أساسيات القبول الشامل</li>
+                <li>أفضل ممارسات التحقق والتخزين والمعالجة</li>
+                <li>دعم العناوين الدولية في البريد الإلكتروني</li>
+                <li>التحديات والحلول التقنية</li>
               </ul>
             </div>
             <div className="p-6 pt-0">
-              <Button variant="outline" className="w-full" rightIcon={<Download size={18} />}>
+                <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => window.open("https://uasg.tech/download/uasg-005-ua-quick-guide-en/", "_blank")}
+                leftIcon={<Download size={18} />}
+                >
                 تحميل الدليل
-              </Button>
+                </Button>
             </div>
           </Card>
           
@@ -56,23 +60,25 @@ const ResourcesPage: React.FC = () => {
             <div className="p-6 flex-grow">
               <div className="flex items-start mb-4">
                 <Book className="w-8 h-8 text-primary-600 ml-3" />
-                <h3 className="text-xl font-semibold text-gray-900">دليل أسماء النطاقات العربية</h3>
+                <h3 className="text-xl font-semibold text-gray-900">إطار عمل الجاهزية للقبول الشامل                </h3>
               </div>
               <p className="text-gray-700 mb-4">
-                كل ما تحتاج معرفته عن أسماء النطاقات العربية الدولية.
-                يغطي هذا الدليل الجوانب التقنية للنص العربي في أسماء النطاقات.
+              دليل شامل يشرح كيفية تحديد، قبول، فحص التطبيقات لضمان عملعا بنظام القبول العالمي الشامل 
               </p>
               <ul className="text-gray-700 mb-4 list-disc list-inside">
-                <li>خصائص النص العربي</li>
-                <li>الترميز وتحويل Punycode</li>
-                <li>اعتبارات العرض</li>
-                <li>معالجة الاتجاه (RTL)</li>
+                <li>مجموعة التطبيقات التي يُسعى لدعم القبول العالمي فيها</li>
+                <li>الترميز المشترك</li>
+                <li>خطوات التحقق من المطابقة لمعايير القبول العالمي</li>
               </ul>
             </div>
             <div className="p-6 pt-0">
-              <Button variant="outline" className="w-full" rightIcon={<Download size={18} />}>
+              <Button variant="outline" className="w-full" 
+              onClick={() => window.open("https://uasg.tech/download/uasg-026-ua-readiness-framework-en/", "_blank")}
+              leftIcon={<Download size={18} />}
+              >
                 تحميل الدليل
               </Button>
+               
             </div>
           </Card>
           
@@ -87,16 +93,19 @@ const ResourcesPage: React.FC = () => {
                 تعلم كيفية التعامل مع عناوين البريد الإلكتروني الدولية في أنظمتك.
               </p>
               <ul className="text-gray-700 mb-4 list-disc list-inside">
-                <li>امتدادات SMTP</li>
-                <li>اعتبارات IMAP و POP3</li>
-                <li>ترميز الترويسة</li>
-                <li>قضايا التوافق</li>
+                <li>النظام الرئيسي للبريد الإلكتروني</li>
+                <li>تمييز الايميلات الموافقة لمعايير القبول العالمي</li>
+                <li>كيفية الاستقبال ولإرسال من البريد الالكرتوني الموافق لمعايير القبول العالمي</li>
               </ul>
             </div>
             <div className="p-6 pt-0">
-              <Button variant="outline" className="w-full" rightIcon={<Download size={18} />}>
-                تحميل المعايير
+              <Button variant="outline" className="w-full" 
+              onClick={() => window.open("https://uasg.tech/download/uasg-012-eai-a-technical-overview-en/", "_blank")}
+              leftIcon={<Download size={18} />}
+              >
+                تحميل الدليل
               </Button>
+               
             </div>
           </Card>
         </div>
@@ -187,10 +196,10 @@ const ResourcesPage: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               <tr>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">ua-validator.js</div>
+                  <div className="text-sm font-medium text-gray-900">idna-uts46	 </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-sm text-gray-700">مكتبة جافاسكريبت للتحقق من أسماء النطاقات وعناوين البريد الإلكتروني الدولية</div>
+                  <div className="text-sm text-gray-700">مكتبة جافاسكريبت لتحويل والتحقق  من أسماء النطاقات العالمية</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-700">جافاسكريبت</div>
@@ -199,45 +208,46 @@ const ResourcesPage: React.FC = () => {
                   <div className="text-sm text-gray-700">MIT</div>
                 </td>
                 <td className="px-6 py-4 text-left whitespace-nowrap">
-                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700">
+                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700" onClick={() => window.open("https://www.npmjs.com/package/idna-uts46", "_blank")}>
                     عرض
                   </Button>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">arabic-idn</div>
+                  <div className="text-sm font-medium text-gray-900">idna</div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-sm text-gray-700">مكتبة بايثون للتعامل مع النص العربي في أسماء النطاقات</div>
+                  <div className="text-sm text-gray-700">مكتبة بايثون تدعم التحويل بين النص العربي وبونيكود (IDNA2008)	</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-700">بايثون</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-700">Apache 2.0</div>
+                  <div className="text-sm text-gray-700">BSD License</div>
                 </td>
                 <td className="px-6 py-4 text-left whitespace-nowrap">
-                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700">
+                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700" onClick={() => window.open("https://pypi.org/project/idna/", "_blank")}>
                     عرض
                   </Button>
                 </td>
               </tr>
               <tr>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">eai-toolkit</div>
+                  <div className="text-sm font-medium text-gray-900">ICU4J</div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-sm text-gray-700">مجموعة أدوات جافا لتدويل عناوين البريد الإلكتروني</div>
+                  <div className="text-sm text-gray-700"> (بما فيها العربية) مكتبة جافا تدعم كامل لتحويل النطاقات الدولية </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-700">جافا</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-700">GPL-3.0</div>
+                  <div className="text-sm text-gray-700">ICU license
+                  </div>
                 </td>
                 <td className="px-6 py-4 text-left whitespace-nowrap">
-                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700">
+                  <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700" onClick={() => window.open("https://unicode-org.github.io/icu/userguide/icu4j/", "_blank")}>
                     عرض
                   </Button>
                 </td>
