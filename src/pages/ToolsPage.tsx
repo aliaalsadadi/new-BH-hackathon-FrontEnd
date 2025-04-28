@@ -16,60 +16,74 @@ const ToolsPage: React.FC = () => {
   const linkifyTextUTS58 = (text: string): string => {
     if (!text) return '';
 
-    // Preserve line breaks
-    let processedText = text.replace(/\n/g, '\n ').replace(/\r/g, '\r ');
+    // Create a safe copy of the text to work with
+    let processedText = text;
 
-    // Patterns
+    // Store all matches and their replacements to apply them in a single pass later
+    const replacements: { startPos: number; endPos: number; replacement: string }[] = [];
+
+    // --------- Find all EMAIL matches first ----------
+    // Patterns for email detection
     const domainLabelPattern = /[\p{L}\p{N}][\p{L}\p{N}-]*/gu;
     const domainPattern = new RegExp(`(${domainLabelPattern.source}(?:\\.${domainLabelPattern.source})+)`, 'u');
     const emailLocalPartPattern = /[\p{L}\p{N}._%+-]+/gu;
-    const emailPattern = new RegExp(`(${emailLocalPartPattern.source}@${domainPattern.source})`, 'gu');
-    const urlPrefixPattern = /(?:https?:\/\/|www\.)/iu;
-    const pathQueryFragmentPattern = /(?:\/[^\s<>()[\]{}]*)?/gu;
-    const urlPattern = new RegExp(`(?:${urlPrefixPattern.source})?${domainPattern.source}${pathQueryFragmentPattern.source}`, 'gu');
+    const emailRegex = new RegExp(`(${emailLocalPartPattern.source}@${domainPattern.source})`, 'gu');
 
-    const processedRanges: { start: number; end: number }[] = [];
-
-    let match: RegExpExecArray | null;
-
-    // --------- EMAILS First ----------
-    while ((match = emailPattern.exec(processedText)) !== null) {
-      const fullMatch = match[0];
-      const startPos = match.index;
+    let emailMatch;
+    while ((emailMatch = emailRegex.exec(text)) !== null) {
+      const fullMatch = emailMatch[0];
+      const startPos = emailMatch.index;
       const endPos = startPos + fullMatch.length;
-
-      if (processedRanges.some(r => (startPos >= r.start && startPos < r.end) || (endPos > r.start && endPos <= r.end))) continue;
 
       try {
         const [localPart, domainPart] = fullMatch.split('@');
         const asciiDomain = punycode.toASCII(domainPart);
         const asciiEmail = `${localPart}@${asciiDomain}`;
+
         const replacement = `<a href="mailto:${asciiEmail}" class="text-primary-600 hover:underline">${fullMatch}</a>`;
 
-        processedText = processedText.slice(0, startPos) + replacement + processedText.slice(endPos);
-        const diff = replacement.length - fullMatch.length;
-        emailPattern.lastIndex += diff;
-        processedRanges.push({ start: startPos, end: startPos + replacement.length });
+        // Store this replacement for later
+        replacements.push({
+          startPos,
+          endPos,
+          replacement
+        });
       } catch (error) {
         console.error("Email linkify error", error);
       }
     }
 
-    // --------- URLs After ----------
-    urlPattern.lastIndex = 0;
-    while ((match = urlPattern.exec(processedText)) !== null) {
-      const fullMatch = match[0];
-      const startPos = match.index;
+    // --------- Find all URL matches ----------
+    // Patterns for URL detection - be more strict about what constitutes a domain
+    const urlPrefixPattern = /(?:https?:\/\/|www\.)/i;
+    const pathQueryFragmentPattern = /(?:\/[^\s<>()[\]{}]*)?/;
+    const urlRegex = new RegExp(
+      `((?:${urlPrefixPattern.source})?${domainPattern.source}${pathQueryFragmentPattern.source})`,
+      'gu'
+    );
+
+    let urlMatch;
+    while ((urlMatch = urlRegex.exec(text)) !== null) {
+      const fullMatch = urlMatch[0];
+      const startPos = urlMatch.index;
       const endPos = startPos + fullMatch.length;
 
-      if (processedRanges.some(r => (startPos >= r.start && startPos < r.end) || (endPos > r.start && endPos <= r.end))) continue;
+      // Skip if this URL overlaps with any email we've already found
+      const overlapsWithEmail = replacements.some(
+        r => (startPos >= r.startPos && startPos < r.endPos) ||
+          (endPos > r.startPos && endPos <= r.endPos) ||
+          (startPos <= r.startPos && endPos >= r.endPos)
+      );
+
+      if (overlapsWithEmail) continue;
 
       try {
         if (!fullMatch.includes('.')) continue;
+
         const hasProtocol = /^https?:\/\//i.test(fullMatch);
         const hasWww = /^www\./i.test(fullMatch);
 
-        let domainPart: string;
+        let domainPart;
         if (hasProtocol) {
           domainPart = fullMatch.split('//')[1].split('/')[0];
         } else if (hasWww) {
@@ -83,18 +97,28 @@ const ToolsPage: React.FC = () => {
         const href = hasProtocol ? asciiUrl : `http://${asciiUrl}`;
 
         const replacement = `<a href="${href}" class="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
-        processedText = processedText.slice(0, startPos) + replacement + processedText.slice(endPos);
-        const diff = replacement.length - fullMatch.length;
-        urlPattern.lastIndex += diff;
-        processedRanges.push({ start: startPos, end: startPos + replacement.length });
+
+        // Store this replacement for later
+        replacements.push({
+          startPos,
+          endPos,
+          replacement
+        });
       } catch (error) {
         console.error("URL linkify error", error);
       }
     }
 
-    return processedText.replace(/\n /g, '\n').replace(/\r /g, '\r');
-  };
+    // Sort replacements in reverse order (from end to start) to avoid position shifts
+    replacements.sort((a, b) => b.startPos - a.startPos);
 
+    // Apply all replacements in a single pass, from end to start
+    for (const { startPos, endPos, replacement } of replacements) {
+      processedText = processedText.slice(0, startPos) + replacement + processedText.slice(endPos);
+    }
+
+    return processedText;
+  };
 
   const handleLinkifyText = () => {
     setErrorMessage(null);
