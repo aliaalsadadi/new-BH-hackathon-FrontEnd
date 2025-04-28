@@ -2,22 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Menu, X, Globe, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
+import { useUser } from '../../context/UserContext';
 
 const Header: React.FC = () => {
-  const [user, setUser] = useState<{ email: string; fullname?: string } | null>(null);
-
-  useEffect(() => {
-    // On mount, check if user info is stored from a previous session
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-    // if using routing, you might navigate to home or login page
-  };
+  const { user, logout } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -120,16 +108,20 @@ const Header: React.FC = () => {
                   <span className="text-gray-700 font-medium">
                     {user.fullname ? user.fullname : user.email}
                   </span>
-                  {/* (Optional) Logout button */}
-                  <Button onClick={handleLogout} variant="outline" size="sm">
+                  {/* Logout button */}
+                  <Button onClick={logout} variant="outline" size="sm">
                     خروج
                   </Button>
                 </>
               ) : (
                 <>
                   {/* If no user is logged in, show Login and Signup buttons */}
-                  <Button to="/login" variant="outline" size="sm">تسجيل الدخول</Button>
-                  <Button to="/signup" variant="primary" size="sm">إنشاء حساب</Button>
+                  <Button to="/login" variant="outline" size="sm">
+                    تسجيل الدخول
+                  </Button>
+                  <Button to="/signup" variant="primary" size="sm">
+                    إنشاء حساب
+                  </Button>
                 </>
               )}
             </div>

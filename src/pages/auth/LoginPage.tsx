@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Shield } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
+import { useUser } from '../../context/UserContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
+  const { setUser, fetchProgress } = useUser(); // Assuming you have a context or state management for user
   const navigate = useNavigate();
 
   const handleSendCode = async (e: React.FormEvent) => {
@@ -36,21 +38,21 @@ const LoginPage: React.FC = () => {
       const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: verificationCode })
+        body: JSON.stringify({ email, code: verificationCode }),
       });
       if (res.ok) {
         const userData = await res.json();
-        // Persist user info (email, name, progress) to localStorage
-        localStorage.setItem('user', JSON.stringify(userData));
-        // Redirect to main app (e.g., lessons page) after login
-        navigate('/learn');
+        setUser(userData); // Update the global user state
+        localStorage.setItem('user', JSON.stringify(userData)); // Persist user data
+        await fetchProgress(userData.email); // Fetch progress
+        navigate('/learn'); // Redirect to the Learn page
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to verify code.');
       }
     } catch (error) {
       console.error(error);
-      alert('An error occurred during login.');
+      alert('An error occurred.');
     }
   };
 

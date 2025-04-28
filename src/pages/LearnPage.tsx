@@ -8,24 +8,30 @@ import Card from '../components/ui/Card';
 import BadgeShowcase from '../components/ui/BadgeShowcase';
 import useLessonStore from '../store/lessons';
 import useBadgeStore from '../store/badges';
-
+import { useUser } from '../context/UserContext';
 const LearnPage: React.FC = () => {
   const navigate = useNavigate();
-  const { lessons, getLessonProgress, isLessonAvailable } = useLessonStore();
+  const { lessons } = useLessonStore();
   const { badges } = useBadgeStore();
+  const { user } = useUser();
 
   const startLearning = () => {
     navigate('/learn/placement-quiz');
   };
+  const isLessonAvailable = (level: string, lessonId: number): boolean => {
+    if (lessonId === 1) return true; // The first lesson is always available.
 
+    const previousLesson = user?.progress?.[level]?.[lessonId - 1];
+    return previousLesson?.completed === true && previousLesson.score >= 70; // Ensure the previous lesson is completed with a passing score.
+  };
   const renderLessonCard = (lesson: any, level: string) => {
-    const progress = getLessonProgress(level, lesson.id);
-    const isAvailable = isLessonAvailable(level, lesson.id);
-    const isLocked = !isAvailable;
-
+    const progress = user?.progress?.[level]?.[lesson.id];
+    const isCompleted = progress?.completed;
+    const score = progress?.score;
+    const isLocked = !isLessonAvailable(level, lesson.id);
     return (
       <Card key={lesson.id} className="p-6 relative">
-        {progress.completed ? (
+        {isCompleted ? (
           <div className="absolute top-4 left-4">
             <CheckCircle className="w-6 h-6 text-green-500" />
           </div>
@@ -34,17 +40,17 @@ const LearnPage: React.FC = () => {
             <Lock className="w-6 h-6 text-gray-400" />
           </div>
         ) : null}
-        
+
         <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <BookOpen className="w-8 h-8 text-primary-600" />
         </div>
         <h3 className="text-xl font-semibold mb-2 text-center">{lesson.title}</h3>
         <p className="text-gray-600 text-center mb-6">{lesson.description}</p>
-        
-        {progress.completed ? (
+
+        {isCompleted ? (
           <div className="space-y-3">
             <div className="bg-green-50 text-green-700 text-sm rounded-md p-2 text-center">
-              تم الإكمال بنجاح - {progress.score}%
+              تم الإكمال بنجاح - {score}%
             </div>
             <Button
               to={`/learn/${level}/${lesson.id}`}
@@ -72,7 +78,7 @@ const LearnPage: React.FC = () => {
     <>
       <div className="relative bg-gradient-to-r from-primary-800 to-secondary-800 text-white py-24 md:py-32">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div 
+          <motion.div
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,8 +89,8 @@ const LearnPage: React.FC = () => {
               ابدأ رحلة التعلم مع تجربة مخصصة بناءً على مستوى معرفتك
             </p>
             <div className="mt-8">
-              <Button 
-                variant="accent" 
+              <Button
+                variant="accent"
                 size="lg"
                 onClick={startLearning}
               >
@@ -123,8 +129,8 @@ const LearnPage: React.FC = () => {
         <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
           ابدأ رحلتك في القبول العالمي مع منصتنا التفاعلية للتعلم
         </p>
-        <Button 
-          size="lg" 
+        <Button
+          size="lg"
           variant="primary"
           onClick={startLearning}
         >

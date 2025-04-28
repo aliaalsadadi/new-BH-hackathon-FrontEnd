@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Shield, User } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
+import { validateEmail } from '../../utils/utils';
+import { useUser } from '../../context/UserContext';
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -10,6 +12,7 @@ const SignupPage: React.FC = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const navigate = useNavigate();
+  const { setUser, fetchProgress } = useUser(); // Assuming you have a context or state management for user
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +33,18 @@ const SignupPage: React.FC = () => {
       alert('An error occurred.');
     }
   };
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (!validateEmail(value)) {
+      setEmailError('البريد الإلكتروني غير صالح.');
+    } else {
+      setEmailError(null);
+    }
+  };
 
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,21 +52,21 @@ const SignupPage: React.FC = () => {
       const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/verify-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: verificationCode, fullname: name })
+        body: JSON.stringify({ email, code: verificationCode, fullname: name }),
       });
       if (res.ok) {
         const userData = await res.json();
-        // Save user info to localStorage for persistence across sessions
-        localStorage.setItem('user', JSON.stringify(userData));
-        // Redirect to the learning page or home page after successful signup
-        navigate('/learn');
+        setUser(userData); // Update the global user state
+        localStorage.setItem('user', JSON.stringify(userData)); // Persist user data
+        await fetchProgress(userData.email); // Fetch progress
+        navigate('/learn'); // Redirect to the Learn page
       } else {
         const data = await res.json();
         alert(data.error || 'Failed to verify code.');
       }
     } catch (error) {
       console.error(error);
-      alert('An error occurred during verification.');
+      alert('An error occurred.');
     }
   };
 
@@ -107,15 +122,16 @@ const SignupPage: React.FC = () => {
                 <input
                   id="email"
                   name="email"
-                  type="email"
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                   disabled={isCodeSent}
-                  className="block w-full pr-10 pl-3 py-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-100 disabled:text-gray-500"
+                  className={`block w-full pr-10 pl-3 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'
+                    } rounded-md focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-100 disabled:text-gray-500`}
                   placeholder="بريدك@example.com"
                 />
+                {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
               </div>
             </div>
 
