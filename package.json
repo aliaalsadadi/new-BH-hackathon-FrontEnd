@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/prismjs": "^1.26.5",
     "@types/punycode": "^2.1.4",
     "framer-motion": "^11.0.3",
     "html-react-parser": "^5.2.3",

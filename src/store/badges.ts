@@ -18,38 +18,38 @@ interface BadgeStore {
 
 const initialBadges: Record<string, Badge> = {
   beginner: {
-    id: 'beginner',
+    id: 'مبتدئ',
     icon: '🧠',
-    name: 'UA Beginner',
-    message: 'Great start! You completed Lesson 1 and passed your first quiz!',
+    name: 'مبتدئ القبول العالمي',
+    message: 'بداية رائعة! لقد أنهيت الدرس الأول وتجاوزت أول اختبار لك!',
     earned: false
   },
   explorer: {
     id: 'explorer',
     icon: '🥉',
-    name: 'UA Explorer',
-    message: 'Awesome! You finished the Beginner Level!',
+    name: 'مستكشف القبول العالمي',
+    message: 'رائع! لقد أنهيت مستوى المبتدئين!',
     earned: false
   },
   advanced_explorer: {
     id: 'advanced_explorer',
     icon: '🥈',
-    name: 'UA Advanced Explorer',
-    message: "You're getting strong! Intermediate Level conquered!",
+    name: 'مستكشف متقدم للقبول العالمي',
+    message: "أصبحت أقوى! لقد أتممت مستوى المتوسطين!",
     earned: false
   },
   expert: {
     id: 'expert',
     icon: '🥇',
-    name: 'UA Expert',
-    message: 'Master! You completed all advanced lessons!',
+    name: 'خبير القبول العالمي',
+    message: 'أنت محترف! لقد أنهيت جميع دروس المستوى المتقدم!',
     earned: false
   },
   champion: {
     id: 'champion',
     icon: '🏆',
-    name: 'UA Champion',
-    message: "Incredible! You're a certified UA Champion!",
+    name: 'بطل القبول العالمي',
+    message: "رائع! لقد أصبحت بطلًا معتمدًا في القبول العالمي!",
     earned: false
   }
 };
@@ -58,7 +58,7 @@ const useBadgeStore = create<BadgeStore>()(
   persist(
     (set, get) => ({
       badges: initialBadges,
-      
+
       earnBadge: (badgeId: string) => {
         const badge = get().badges[badgeId];
         if (badge && !badge.earned) {
@@ -74,7 +74,7 @@ const useBadgeStore = create<BadgeStore>()(
           }));
         }
       },
-      
+
       hasBadge: (badgeId: string) => {
         return get().badges[badgeId]?.earned || false;
       }

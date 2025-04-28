@@ -35,7 +35,6 @@ function App() {
         <Route path="/learn/placement-quiz" element={<PlacementQuizPage />} />
         <Route path="/learn/:level/:lessonId" element={<LessonPage />} />
         <Route path="/subscribe" element={<SubscribePage />} />
-        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="*" element={<NotFoundPage />} />
