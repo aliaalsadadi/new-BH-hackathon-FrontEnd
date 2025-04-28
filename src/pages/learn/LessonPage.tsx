@@ -9,7 +9,9 @@ import SuccessConfetti from '../../components/ui/SuccessConfetti';
 import BadgePopup from '../../components/ui/BadgePopup';
 import useLessonStore from '../../store/lessons';
 import useBadgeStore from '../../store/badges';
-
+import InteractiveLesson from '../../components/ui/InteractiveLesson';
+import InteractiveLesson2 from '../../components/ui/InteractiveLesson2';
+import InteractiveLesson3 from '../../components/ui/InteractiveLesson3';
 const LessonPage: React.FC = () => {
   const { level = 'beginner', lessonId } = useParams();
   const navigate = useNavigate();
@@ -212,10 +214,19 @@ const LessonPage: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
-                  <div 
-                    className="prose max-w-none"
-                    dangerouslySetInnerHTML={{ __html: lesson.content }}
-                  />
+                {(() => {
+  switch (level) {
+    case 'beginner':
+      return <InteractiveLesson />;
+    case 'intermediate':
+      return <InteractiveLesson2 />;
+    case 'advanced':
+      return <InteractiveLesson3 />;
+    default:
+      return null;
+  }
+})()}
+
                   <div className="mt-8 flex justify-end">
                     <Button 
                       variant="primary"
@@ -237,6 +248,7 @@ const LessonPage: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
+               
                   {!quizCompleted ? (
                     <>
                       <div className="mb-8">
