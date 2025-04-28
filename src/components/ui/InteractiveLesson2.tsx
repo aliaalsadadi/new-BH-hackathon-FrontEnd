@@ -408,16 +408,7 @@ export default function InteractiveLesson() {
         >
           السابق
         </button>
-
-        <div className="flex gap-4">
-          {!showQuiz && (
-            <button
-              onClick={() => setShowQuiz(true)}
-              className="bg-secondary-600 text-white px-6 py-2 rounded transition-all duration-200 hover:bg-secondary-700"
-            >
-              اختبر معلوماتك
-            </button>
-          )}
+       
           
           {currentIndex < sections.length - 1 ? (
             <button
@@ -436,6 +427,5 @@ export default function InteractiveLesson() {
           )}
         </div>
       </div>
-    </div>
   );
 }
