@@ -149,14 +149,14 @@ const Chatbot: React.FC = () => {
               </Button>
               <label htmlFor="file-upload" className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-lg transition ${loading || fileUploading ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300'}`}>
                 <Upload className="w-5 h-5" />
-                <span className="text-sm font-medium">رفع ملف</span>
+                <span className="hidden md:block text-sm font-medium">رفع ملف</span>
                 <input
                   id="file-upload"
                   type="file"
                   accept=".pdf,.docx,.txt"
                   onChange={handleFileUpload}
                   disabled={loading || fileUploading}
-                  className="hidden"
+                  className="hidden w-full"
                 />
               </label>
             </div>

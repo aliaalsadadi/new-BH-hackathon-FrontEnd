@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2 text-primary-700 font-bold text-xl">
             <img src="/1024U.png" alt="القبول العالمي" className="w-6 h-6" />
-            <span>بوابة القبول العالمي</span>
+            <span className='text-sm md:text-base lg:text-lg'>بوابة القبول العالمي</span>
           </NavLink>
 
           {/* Desktop Navigation */}
