@@ -13,7 +13,7 @@ import ContactPage from './pages/ContactPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import AbcToolPage from './pages/tools/AbcToolPage';
-
+import NotFoundPage from './pages/404';
 
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/tools" element={<ToolsPage />} />
-        <Route path="/tools/abc" element={<AbcToolPage />} />
+        <Route path="/tools/analyzeCode" element={<AbcToolPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/learn" element={<LearnPage />} />
         <Route path="/learn/placement-quiz" element={<PlacementQuizPage />} />
@@ -38,6 +38,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Layout>
   );

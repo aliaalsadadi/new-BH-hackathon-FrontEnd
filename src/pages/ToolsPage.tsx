@@ -96,7 +96,7 @@ const ToolsPage: React.FC = () => {
         const asciiUrl = fullMatch.replace(domainPart, asciiDomain);
         const href = hasProtocol ? asciiUrl : `http://${asciiUrl}`;
 
-        const replacement = `<a href="${href}" class="text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
+        const replacement = `<a href="${href}" class="text-primary-600 hover:underline underline" target="_blank" rel="noopener noreferrer">${fullMatch}</a>`;
 
         // Store this replacement for later
         replacements.push({
@@ -193,10 +193,10 @@ const ToolsPage: React.FC = () => {
           </div>
 
           <FeatureCard
-            title="ABC"
+            title="AnalyzeCode"
             description="أداة متقدمة لتحليل المستندات والنصوص"
             icon={<FileText className="w-6 h-6" />}
-            link="/tools/abc"
+            link="/tools/analyzeCode"
           />
         </div>
       </Section>
