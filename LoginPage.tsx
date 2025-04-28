@@ -79,7 +79,6 @@ const LoginPage: React.FC = () => {
                 <input
                   id="email"
                   name="email"
-                  type="email"
                   autoComplete="email"
                   required
                   value={email}

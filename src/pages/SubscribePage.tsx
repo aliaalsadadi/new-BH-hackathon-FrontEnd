@@ -75,7 +75,6 @@ const SubscribePage: React.FC = () => {
                       <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
-                      type="email"
                       id="email"
                       required
                       value={email}

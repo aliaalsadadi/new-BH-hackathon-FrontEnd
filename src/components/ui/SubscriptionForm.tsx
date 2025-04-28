@@ -100,7 +100,6 @@ const SubscriptionForm: React.FC<SubscriptionFormProps> = ({ className = '' }) =
 
           <div className="relative">
             <input
-              type="email"
               value={email}
               onChange={handleEmailChange}
               placeholder="أدخل بريدك الإلكتروني"
