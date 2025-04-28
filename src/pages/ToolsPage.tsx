@@ -170,19 +170,27 @@ const ToolsPage: React.FC = () => {
             link="/tools/chatbot"
           />
 
-          <FeatureCard
-            title="المترجم"
-            description="ترجمة فورية لأسماء النطاقات والمصطلحات التقنية عبر لغات ونصوص متعددة"
-            icon={<Languages className="w-6 h-6" />}
-            link="/tools/translator"
-          />
+          <div
+            onClick={() => document.getElementById('translator')?.scrollIntoView({ behavior: 'smooth' })}
+            className="cursor-pointer"
+          >
+            <FeatureCard
+              title="المحول"
+              description="ترجمة فورية لأسماء النطاقات والمصطلحات التقنية عبر لغات ونصوص متعددة"
+              icon={<Languages className="w-6 h-6" />}
+            />
+          </div>
 
-          <FeatureCard
-            title="الملخص"
-            description="تلخيص سريع للوثائق التقنية المعقدة والمواصفات الخاصة بالقبول العالمي"
-            icon={<AlignLeft className="w-6 h-6" />}
-            link="/tools/summarizer"
-          />
+          <div
+            onClick={() => document.getElementById('summarizer')?.scrollIntoView({ behavior: 'smooth' })}
+            className="cursor-pointer"
+          >
+            <FeatureCard
+              title="الملخص"
+              description="تلخيص سريع للوثائق التقنية المعقدة والمواصفات الخاصة بالقبول العالمي"
+              icon={<AlignLeft className="w-6 h-6" />}
+            />
+          </div>
 
           <FeatureCard
             title="ABC"

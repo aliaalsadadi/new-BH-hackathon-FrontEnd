@@ -11,7 +11,7 @@ import useBadgeStore from '../store/badges';
 import { useUser } from '../context/UserContext';
 const LearnPage: React.FC = () => {
   const navigate = useNavigate();
-  const { lessons } = useLessonStore();
+  const { lessons, getLessonProgress } = useLessonStore();
   const { badges } = useBadgeStore();
   const { user } = useUser();
 
@@ -21,7 +21,10 @@ const LearnPage: React.FC = () => {
   const isLessonAvailable = (level: string, lessonId: number): boolean => {
     if (lessonId === 1) return true; // The first lesson is always available.
 
-    const previousLesson = user?.progress?.[level]?.[lessonId - 1];
+    const previousLesson = user
+      ? user.progress?.[level]?.[lessonId - 1]
+      : getLessonProgress(level, lessonId - 1); // Fallback to lessonStore
+
     return previousLesson?.completed === true && previousLesson.score >= 70; // Ensure the previous lesson is completed with a passing score.
   };
   const renderLessonCard = (lesson: any, level: string) => {

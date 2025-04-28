@@ -12,6 +12,7 @@ import useBadgeStore from '../../store/badges';
 import InteractiveLesson from '../../components/ui/InteractiveLesson';
 import InteractiveLesson2 from '../../components/ui/InteractiveLesson2';
 import InteractiveLesson3 from '../../components/ui/InteractiveLesson3';
+import { useUser } from '../../context/UserContext';
 const LessonPage: React.FC = () => {
   const { level = 'beginner', lessonId } = useParams();
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const LessonPage: React.FC = () => {
   const [showCompletion, setShowCompletion] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [earnedBadge, setEarnedBadge] = useState<{ icon: string; name: string; message: string } | null>(null);
-
+  const { user } = useUser(); // Assuming you have a context or state management for user
   const { lessons, completeLesson, isLessonAvailable } = useLessonStore();
   const { badges } = useBadgeStore();
   const lesson = lessons[level]?.find(l => l.id === parseInt(lessonId || '1'));
@@ -60,17 +61,17 @@ const LessonPage: React.FC = () => {
       if (finalScore >= 70) {
         setShowConfetti(true);
         const lessonIdNum = parseInt(lessonId || '1');
+
+        // Always complete lesson locally
         completeLesson(level, lessonIdNum, finalScore);
 
-        // Immediately send progress to backend for persistence
-        const storedUserStr = localStorage.getItem('user');
-        if (storedUserStr) {
-          const storedUser = JSON.parse(storedUserStr);
+        // If user is logged in, also update server
+        if (user) {
           fetch(`${import.meta.env.VITE_BASEURL}/api/progress/update`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              email: storedUser.email,
+              email: user.email,
               level: level,
               lessonId: lessonIdNum,
               score: finalScore
@@ -84,8 +85,8 @@ const LessonPage: React.FC = () => {
             .catch(err => console.error('Network error updating progress:', err));
         }
 
-        // Check for newly earned badge
-        const badgeId = getBadgeId(level, parseInt(lessonId || '1'));
+        // Check for badge
+        const badgeId = getBadgeId(level, lessonIdNum);
         if (badgeId && badges[badgeId] && !badges[badgeId].earned) {
           setEarnedBadge({
             icon: badges[badgeId].icon,
@@ -237,18 +238,18 @@ const LessonPage: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
-                {(() => {
-  switch (level) {
-    case 'beginner':
-      return <InteractiveLesson />;
-    case 'intermediate':
-      return <InteractiveLesson2 />;
-    case 'advanced':
-      return <InteractiveLesson3 />;
-    default:
-      return null;
-  }
-})()}
+                  {(() => {
+                    switch (level) {
+                      case 'beginner':
+                        return <InteractiveLesson />;
+                      case 'intermediate':
+                        return <InteractiveLesson2 />;
+                      case 'advanced':
+                        return <InteractiveLesson3 />;
+                      default:
+                        return null;
+                    }
+                  })()}
 
                   <div className="mt-8 flex justify-end">
                     <Button
@@ -271,7 +272,7 @@ const LessonPage: React.FC = () => {
                 transition={{ duration: 0.3 }}
               >
                 <Card className="p-8">
-               
+
                   {!quizCompleted ? (
                     <>
                       <div className="mb-8">
