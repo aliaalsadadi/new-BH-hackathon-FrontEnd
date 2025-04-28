@@ -1,16 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, AlignLeft, Languages, Brain, BarChart, BookOpen, Globe, Code, FileText } from 'lucide-react';
+import { Link, AlignLeft, Languages, Brain, BarChart, BookOpen, Globe, Code, FileText } from 'lucide-react';
 import Section from '../components/ui/Section';
 import Card from '../components/ui/Card';
 import FeatureCard from '../components/ui/FeatureCard';
 import Button from '../components/ui/Button';
 import punycode from 'punycode';
+import SummarizerSection from '../components/ui/summarizer';
 
 const ToolsPage: React.FC = () => {
   const [textInput, setTextInput] = useState('');
   const [processedText, setProcessedText] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
+  // Helper: Detect language direction
+  const getDirection = (text: string) => {
+    const arabic = /[\u0600-\u06FF]/;
+    const english = /[A-Za-z]/;
+
+    let arabicCount = 0;
+    let englishCount = 0;
+
+    for (let char of text) {
+      if (arabic.test(char)) arabicCount++;
+      if (english.test(char)) englishCount++;
+    }
+
+    return arabicCount > englishCount ? 'rtl' : 'ltr';
+  };
 
   // ========== LINKIFY LOCALLY ==========
   const linkifyTextUTS58 = (text: string): string => {
@@ -162,22 +180,16 @@ const ToolsPage: React.FC = () => {
         title="أدوات ذكية مدعومة بالذكاء الاصطناعي"
         subtitle="أدوات متقدمة لمساعدتك في فهم وتطبيق القبول العالمي بشكل أفضل"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <FeatureCard
-            title="روبوت المحادثة"
-            description="احصل على إجابات فورية لأسئلتك حول القبول العالمي من خلال روبوت المحادثة المدعوم بالذكاء الاصطناعي"
-            icon={<MessageSquare className="w-6 h-6" />}
-            link="/tools/chatbot"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-8">
 
           <div
             onClick={() => document.getElementById('translator')?.scrollIntoView({ behavior: 'smooth' })}
             className="cursor-pointer"
           >
             <FeatureCard
-              title="المحول"
-              description="ترجمة فورية لأسماء النطاقات والمصطلحات التقنية عبر لغات ونصوص متعددة"
-              icon={<Languages className="w-6 h-6" />}
+              title="محول روابط النص"
+              description="عرض فوري لأسماء النطاقات والمصطلحات التقنية عبر لغات ونصوص متعددة"
+              icon={<Link className="w-6 h-6" />}
             />
           </div>
 
@@ -193,8 +205,8 @@ const ToolsPage: React.FC = () => {
           </div>
 
           <FeatureCard
-            title="AnalyzeCode"
-            description="أداة متقدمة لتحليل المستندات والنصوص"
+            title="تحليل الأكواد البرمجية"
+            description="أداة متقدمة لتحليل الأكواد البرمجية والتأكد من مطابقتها لمعايير القبول العالمي"
             icon={<FileText className="w-6 h-6" />}
             link="/tools/analyzeCode"
           />
@@ -213,6 +225,7 @@ const ToolsPage: React.FC = () => {
               <textarea
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
+                dir={getDirection(textInput)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500 mb-4"
                 placeholder="مثلاً: contact@مثال.عربي أو هاكاثون.البحرين"
                 rows={6}
@@ -247,7 +260,8 @@ const ToolsPage: React.FC = () => {
 
       {/* Summarizer Feature */}
       <Section id="summarizer">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <SummarizerSection></SummarizerSection>
+        {/* <div className="grid md:grid-cols-2 gap-12 items-center">
           <Card className="p-8 border border-gray-200">
             <h3 className="text-xl font-semibold mb-4">ملخص الوثائق التقنية</h3>
             <div className="space-y-4">
@@ -304,7 +318,7 @@ const ToolsPage: React.FC = () => {
               <Button variant="primary">جرب الملخص</Button>
             </div>
           </div>
-        </div>
+        </div> */}
       </Section>
 
       {/* Other Features */}
